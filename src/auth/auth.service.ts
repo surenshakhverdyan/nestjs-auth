@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private readonly payloadService: PayloadService,
     private readonly tokenService: TokenService,
-    private userService: UserService,
+    private readonly userService: UserService,
   ) {}
 
   async signUp(dto: CreateUserDto): Promise<IUser> {
