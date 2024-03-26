@@ -36,11 +36,12 @@ export class UserService {
     }
   }
 
-  response(_user: User): IUser {
+  response(_user: User, token?: string): IUser {
     const user = {
       id: _user._id,
       name: _user.name,
       email: _user.email,
+      authToken: token,
     };
 
     return user;

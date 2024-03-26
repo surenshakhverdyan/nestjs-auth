@@ -7,5 +7,6 @@ import { PayloadService } from './payload.service';
 @Module({
   imports: [JwtModule],
   providers: [TokenService, PayloadService],
+  exports: [TokenService, PayloadService],
 })
 export class TokenModule {}
