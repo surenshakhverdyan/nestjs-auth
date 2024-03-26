@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 import { IPayload } from './interfaces';
-import { Request } from 'express';
 
 @Injectable()
 export class TokenService {
@@ -21,6 +21,15 @@ export class TokenService {
     return token;
   }
 
+  signRefresh(payload: IPayload): string {
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_SECRET'),
+      expiresIn: '7d',
+    });
+
+    return token;
+  }
+
   verify(token: string): IPayload {
     try {
       const payload = this.jwtService.verify(token, {
@@ -31,6 +40,12 @@ export class TokenService {
     } catch (error: any) {
       throw new UnauthorizedException();
     }
+  }
+
+  decode(token: string): IPayload {
+    const payload = this.jwtService.decode(token);
+
+    return payload;
   }
 
   extractFromHeaders(req: Request): string | undefined {

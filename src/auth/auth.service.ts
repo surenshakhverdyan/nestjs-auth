@@ -1,8 +1,11 @@
 import {
   HttpException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from 'src/user/dto';
@@ -18,13 +21,15 @@ export class AuthService {
     private readonly payloadService: PayloadService,
     private readonly tokenService: TokenService,
     private readonly userService: UserService,
+    @Inject(REQUEST) private readonly request: Request,
   ) {}
 
   async signUp(dto: CreateUserDto): Promise<IUser> {
     const _user = await this.userService.create(dto);
     const payload = this.payloadService.generate(_user._id);
     const token = this.tokenService.sign(payload);
-    const user = this.userService.response(_user, token);
+    const refreshToken = this.tokenService.signRefresh(payload);
+    const user = this.userService.response(_user, token, refreshToken);
 
     return user;
   }
@@ -39,8 +44,18 @@ export class AuthService {
 
     const payload = this.payloadService.generate(_user._id);
     const token = this.tokenService.sign(payload);
-    const user = this.userService.response(_user, token);
+    const refreshToken = this.tokenService.signRefresh(payload);
+    const user = this.userService.response(_user, token, refreshToken);
 
     return user;
+  }
+
+  refreshToken(): string {
+    const refreshToken = this.request.header('refreshToken');
+    const { sub } = this.tokenService.decode(refreshToken);
+    const payload = this.payloadService.generate(sub);
+    const token = this.tokenService.sign(payload);
+
+    return token;
   }
 }

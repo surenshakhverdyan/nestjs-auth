@@ -34,16 +34,17 @@ export class UserService {
 
       return user;
     } catch (error: any) {
-      throw new HttpException('User not found', 404);
+      throw new HttpException(error.message, 500);
     }
   }
 
-  response(_user: User, token?: string): IUser {
+  response(_user: User, token?: string, refreshToken?: string): IUser {
     const user = {
       id: _user._id,
       name: _user.name,
       email: _user.email,
       authToken: token,
+      refreshToken,
     };
 
     return user;
