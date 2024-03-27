@@ -30,6 +30,8 @@ export class AuthService {
   ) {}
 
   async signUp(dto: CreateUserDto): Promise<IUser> {
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    dto.password = hashedPassword;
     const _user = await this.userService.create(dto);
     const payload = this.payloadService.generate(_user._id);
     const token = this.tokenService.sign(payload);
