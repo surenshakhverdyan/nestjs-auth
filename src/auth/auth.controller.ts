@@ -6,8 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto, UpdateUserDto } from 'src/user/dto';
@@ -33,8 +35,8 @@ export class AuthController {
   @UseGuards(RefreshGuard)
   @HttpCode(HttpStatus.OK)
   @Post('refresh-token')
-  refreshToken(): string {
-    return this.authService.refreshToken();
+  refreshToken(@Req() req: Request): string {
+    return this.authService.refreshToken(req);
   }
 
   @HttpCode(HttpStatus.OK)

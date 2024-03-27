@@ -118,7 +118,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"wapp.develope@gmail.com\"\n}",
+					"raw": "{\n    \"email\": \"test@email.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

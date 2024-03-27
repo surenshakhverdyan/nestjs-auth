@@ -1,11 +1,9 @@
 import {
   HttpException,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { REQUEST } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
@@ -25,7 +23,6 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
-    @Inject(REQUEST) private readonly request: Request,
   ) {}
 
   async signUp(dto: CreateUserDto): Promise<IUser> {
@@ -56,8 +53,8 @@ export class AuthService {
     return user;
   }
 
-  refreshToken(): string {
-    const refreshToken = this.request.header('refreshToken');
+  refreshToken(req: Request): string {
+    const refreshToken = req.header('refreshToken');
     const { sub } = this.tokenService.decode(refreshToken);
     const payload = this.payloadService.generate(sub);
     const token = this.tokenService.sign(payload);
