@@ -82,7 +82,7 @@ export class AuthService {
   }
 
   async passwordReset(dto: UpdateUserDto, token: string): Promise<boolean> {
-    const { sub } = this.tokenService.decode(token);
+    const { sub } = this.tokenService.verify(token);
 
     if (!dto.password && !dto.passwordConfirm)
       throw new HttpException('The passwords must not empty', 403);
