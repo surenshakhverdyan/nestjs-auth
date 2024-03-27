@@ -42,12 +42,6 @@ export class TokenService {
     }
   }
 
-  decode(token: string): IPayload {
-    const payload = this.jwtService.decode(token);
-
-    return payload;
-  }
-
   extractFromHeaders(req: Request): string | undefined {
     const [key, token] = req.headers.authorization?.split(' ') ?? [];
 
