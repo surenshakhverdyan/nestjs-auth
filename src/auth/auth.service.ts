@@ -10,13 +10,12 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 
-import { CreateUserDto } from 'src/user/dto';
+import { CreateUserDto, UpdateUserDto } from 'src/user/dto';
 import { IUser } from 'src/user/interfaces';
 import { UserService } from 'src/user/user.service';
 import { PayloadService } from 'src/token/payload.service';
 import { TokenService } from 'src/token/token.service';
 import { SignInDto } from './dto';
-import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 
 @Injectable()
 export class AuthService {

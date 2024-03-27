@@ -10,11 +10,10 @@ import {
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
-import { CreateUserDto } from 'src/user/dto';
+import { CreateUserDto, UpdateUserDto } from 'src/user/dto';
 import { IUser } from 'src/user/interfaces';
 import { SignInDto } from './dto';
 import { RefreshGuard } from 'src/guards';
-import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 
 @Controller('auth')
 export class AuthController {
