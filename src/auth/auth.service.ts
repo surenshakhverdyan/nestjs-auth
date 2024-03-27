@@ -55,7 +55,7 @@ export class AuthService {
 
   refreshToken(req: Request): string {
     const refreshToken = req.header('refreshToken');
-    const { sub } = this.tokenService.decode(refreshToken);
+    const { sub } = this.tokenService.verify(refreshToken);
     const payload = this.payloadService.generate(sub);
     const token = this.tokenService.sign(payload);
 

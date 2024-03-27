@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -15,7 +14,6 @@ import { AuthService } from './auth.service';
 import { CreateUserDto, UpdateUserDto } from 'src/user/dto';
 import { IUser } from 'src/user/interfaces';
 import { SignInDto } from './dto';
-import { RefreshGuard } from 'src/guards';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +30,6 @@ export class AuthController {
     return this.authService.signIn(dto);
   }
 
-  @UseGuards(RefreshGuard)
   @HttpCode(HttpStatus.OK)
   @Post('refresh-token')
   refreshToken(@Req() req: Request): string {
