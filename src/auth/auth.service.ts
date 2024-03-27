@@ -16,6 +16,7 @@ import { UserService } from 'src/user/user.service';
 import { PayloadService } from 'src/token/payload.service';
 import { TokenService } from 'src/token/token.service';
 import { SignInDto } from './dto';
+import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -80,5 +81,21 @@ export class AuthService {
     });
 
     return true;
+  }
+
+  async passwordReset(dto: UpdateUserDto, token: string): Promise<boolean> {
+    const { sub } = this.tokenService.decode(token);
+
+    if (!dto.password && !dto.passwordConfirm)
+      throw new HttpException('The passwords must not empty', 403);
+
+    if (dto.password !== dto.passwordConfirm)
+      throw new HttpException('The passwords must match', 403);
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    dto.password = hashedPassword;
+    delete dto.passwordConfirm;
+
+    return await this.userService.update(dto, sub);
   }
 }
