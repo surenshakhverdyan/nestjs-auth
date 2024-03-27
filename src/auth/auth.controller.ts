@@ -34,4 +34,10 @@ export class AuthController {
   refreshToken(): string {
     return this.authService.refreshToken();
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('forgot-password')
+  forgotPassword(@Body('email') email: string): Promise<boolean> {
+    return this.authService.forgotPassword(email);
+  }
 }
