@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
+import { AppModule } from '../src/app.module';
+
+describe('DashboardController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,10 +16,14 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('dashboard (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/dashboard')
+      .set({
+        authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjA1MjQ5ZjQwZTYxODgxYzYxODQ4YzkiLCJpYXQiOjE3MTE2MTMxMDIsImV4cCI6MTcxMjIxNzkwMn0.YMhFjgVDzIb6yb-8s9NL6c8pVuSXSG6Idfzw63ys3io',
+      })
       .expect(200)
-      .expect('Hello World!');
+      .expect('Hello from dashboard');
   });
 });
